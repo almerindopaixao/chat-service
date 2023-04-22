@@ -1,18 +1,22 @@
 version: '3'
 
 services:
-  chatservice:
+  chatserviceapp:
     build: .
-    container_name: chatservice_app
-    volumes:
-      - .:/go/src
+    container_name: chat-service-app
     ports:
       - "8080:8080"
       - "50052:50051"
+    networks:
+      - fclx
+    volumes:
+      - .:/go/src
+    depends_on:
+      - chatservicedb
       
-  mysql:
+  chatservicedb:
     image: mysql:8
-    container_name: mysql
+    container_name: chat-service-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -20,5 +24,11 @@ services:
       MYSQL_PASSWORD: root
     ports:
       - 3306:3306
+    networks:
+      - fclx
     volumes:
       - .docker/mysql:/var/lib/mysql
+
+networks:
+  fclx:
+    external: true
