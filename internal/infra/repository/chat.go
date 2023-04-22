@@ -74,6 +74,9 @@ func (r *ChatRepositoryMySQL) FindChatByID(ctx context.Context, chatID string) (
 	chat.UserID = res.UserID
 	chat.Status = res.Status
 	chat.TokenUsage = int(res.TokenUsage)
+	chat.InitialSystemMessage = &entity.Message{
+		ID: res.InitialMessageID,
+	}
 	chat.Config = &entity.ChatConfig{
 		Model: &entity.Model{
 			Name:      res.Model,
